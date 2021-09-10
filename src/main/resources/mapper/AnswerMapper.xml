@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shell.xyxv1.mapper.AnswerMapper">
+
+  <select id="getAnswerList" resultType="com.shell.xyxv1.entity.vo.AnswerVo">
+    SELECT
+    c.*,f.label
+    FROM
+    ((
+    SELECT
+    a.*,
+    b.title,
+    b.quizzer,
+    b.quiz_content
+    FROM
+    answer a
+    LEFT JOIN quiz b ON a.quiz_id = b.id
+    ) c
+    LEFT JOIN (
+    SELECT
+    d.quiz_id q,
+    GROUP_CONCAT( e.label SEPARATOR ',' ) label
+    FROM
+    quiz_label_relation d
+    LEFT JOIN quiz_label e ON d.label_id = e.id
+
+    GROUP BY
+    q
+    ) f ON c.quiz_id = f.q  )
+
+    WHERE 1 = 1
+    <if test="param.quizId != null and param.quizId !=''">
+      and quiz_id =#{param.quizId}
+      order by like_point DESC
+    </if>
+
+  </select>
+</mapper>

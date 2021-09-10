@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shell.xyxv1.mapper.EssayMapper">
+
+    <select id="getEssayList" resultType="com.shell.xyxv1.entity.vo.EssayVo">
+        select a.*,b.sort_name from essay a left join essay_sort  b on a.sort_id = b.id where 1=1
+        <if test="param.sortId != null and param.sortId != ''">
+            and sort_id =#{param.sortId}
+        </if>
+        <if test="param.startTime != null and param.endTime != null">
+            and create_time between #{param.startTime} and #{param.endTime}
+        </if>
+        order by create_time desc
+    </select>
+    <select id="getEssayById" resultType="com.shell.xyxv1.entity.vo.EssayVo">
+        select a.*,b.sort_name from essay a left join essay_sort  b on a.sort_id = b.id where 1=1
+<!--        <if test="param.sortId != null and param.sortId != ''">-->
+<!--            and sort_id =#{param.sortId}-->
+<!--        </if>-->
+<!--        <if test="param.startTime != null and param.endTime != null">-->
+<!--            and create_time between #{param.startTime} and #{param.endTime}-->
+<!--        </if>-->
+        and a.id = #{param.id}
+    </select>
+</mapper>
